@@ -12,7 +12,8 @@ environment:
 
 dependencies:
   triple: ">=1.5.0+1 <2.0.0"
-  rx_notifier: ">=1.1.0 <2.0.0"
+  rx_notifier:
+    git: https://github.com/icarohs7/rx_notifier
   collection: ^1.15.0
   flutter:
     sdk: flutter
