@@ -222,14 +222,14 @@ abstract class Store<Error extends Object, State extends Object> {
     await _mutableObjects.completerExecution!.then(
       (value) {
         if (value is State) {
-          update(value, force: true);
           setLoading(false);
+          update(value, force: true);
         }
       },
       onError: (error, __) {
         if (error is Error) {
-          setError(error, force: true);
           setLoading(false);
+          setError(error, force: true);
         } else {
           throw Exception(
             '''is expected a ${Error.toString()} type, and receipt ${error.runtimeType}''',
@@ -268,17 +268,11 @@ abstract class Store<Error extends Object, State extends Object> {
     await _mutableObjects.completerExecution!.then(
       (value) {
         if (value is EitherAdapter<Error, State>) {
-          value.fold(
-            (e) => setError(
-              e,
-              force: true,
-            ),
-            (s) => update(
-              s,
-              force: true,
-            ),
-          );
           setLoading(false);
+          value.fold(
+            (e) => setError(e, force: true),
+            (s) => update(s, force: true),
+          );
         }
       },
     ).valueOrCancellation();
