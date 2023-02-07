@@ -13,8 +13,7 @@ typedef TransitionCallback = Widget Function(
 
 ///[ScopedBuilder] it's the type <TStore extends Store<TError, TState>, TError extends Object,
 ///TState extends Object>
-class ScopedBuilder<TStore extends Store<TError, TState>, TError extends Object,
-    TState extends Object> extends StatefulWidget {
+class ScopedBuilder<TError extends Object, TState extends Object> extends StatefulWidget {
   ///The Function [distinct] it's the type [dynamic] and receive the param state it`s the type [TState]
   final dynamic Function(TState state)? distinct;
 
@@ -32,8 +31,8 @@ class ScopedBuilder<TStore extends Store<TError, TState>, TError extends Object,
   ///The Function [onLoading] it's the type [Widget] and receive the param context it`s the type [BuildContext]
   final Widget Function(BuildContext context)? onLoading;
 
-  ///[store] it's the type [TStore]
-  final TStore? store;
+  ///[store] it's the type [Store<Terror, TState>]
+  final Store<TError, TState>? store;
 
   ///[ScopedBuilder] constructor class
   const ScopedBuilder({
@@ -61,7 +60,7 @@ class ScopedBuilder<TStore extends Store<TError, TState>, TError extends Object,
   ///[ScopedBuilder.transition] it's a [factory]
   factory ScopedBuilder.transition({
     Key? key,
-    TStore? store,
+    Store<TError, TState>? store,
     dynamic Function(TState)? distinct,
     bool Function(TState)? filter,
     TransitionCallback? transition,
@@ -123,12 +122,11 @@ class ScopedBuilder<TStore extends Store<TError, TState>, TError extends Object,
   }
 
   @override
-  _ScopedBuilderState<TStore, TError, TState> createState() =>
-      _ScopedBuilderState<TStore, TError, TState>();
+  _ScopedBuilderState<TError, TState> createState() => _ScopedBuilderState<TError, TState>();
 }
 
-class _ScopedBuilderState<TStore extends Store<TError, TState>, TError extends Object,
-    TState extends Object> extends State<ScopedBuilder<TStore, TError, TState>> {
+class _ScopedBuilderState<TError extends Object, TState extends Object>
+    extends State<ScopedBuilder<TError, TState>> {
   Disposer? disposer;
 
   var _distinct;
@@ -138,12 +136,12 @@ class _ScopedBuilderState<TStore extends Store<TError, TState>, TError extends O
   final Function eq = const ListEquality().equals;
 
   var _tripleEvent = TripleEvent.state;
-  late TStore store;
+  late Store<TError, TState> store;
 
   @override
   void initState() {
     super.initState();
-    store = widget.store ?? getTripleResolver<TStore>();
+    store = widget.store ?? getTripleResolver<Store<TError, TState>>();
     _tripleEvent = store.triple.event;
   }
 
